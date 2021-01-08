@@ -1,63 +1,98 @@
 import { render } from '@testing-library/react';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import './Counter.css';
 
 class Counter extends Component {
-    //always define the initial state int he constructor
+
+    //Count has the class representing the total count. 
     constructor() {
         super();
-        //unles we call the super we cannot use this in the javascript.
         this.state = {
-            counter: 0,
-            secondCounter:0
+            counter: 0
         }
-        //if we want to make the counter available to the method tot he class.
-        //we will have to bind the method to the class
-        //we will have to do that inside the construcor.
-       this.increment=this.increment.bind(this);
-       //we are comneting it as we are now using the arrow function.
+        this.increment = this.increment.bind(this);
+        this.decrement = this.decrement.bind(this);
     }
 
     render() {
-        //we can directly use the css below 
-        const style={fontSize:"50px",padding:"15px 30px"};
         return (
             <div className="counter">
-                <button onClick={this.increment}>{this.props.by}</button>
+                {/* we will be calling the parent method from the child class by passing it as a prop */}
+                <CounterButton by={1} incrementMethod={this.increment} decrementMethod={this.decrement}/>
+                <CounterButton by={5} incrementMethod={this.increment} decrementMethod={this.decrement}/>
+                <CounterButton by={10} incrementMethod={this.increment} decrementMethod={this.decrement}/>
                 <span className="count">{this.state.counter}</span>
-                <span className="count">{this.state.secondCounter}</span>
             </div>
+
         );
     }
-   //we will be changing the abpve code to the arrow function.
-    // render=() =>{
-    //     return (
-    //         <div className="counter">
-    //             <button onClick={this.increment}>+1</button>
-    //             <span className="count">{this.state.counter}</span>
-    //             <span className="count">{this.state.secondCounter}</span>
-    //         </div>
-    //     );
-    // }
 
-    increment() {//
-        //here we are directly changing the state rather than this we should use the useState();
-        //this.state.counter++;
+    increment(by) {
+        console.log(`increment from parent -${by}`)
         this.setState({
-            state:this.state.counter++
+            counter: this.state.counter +by
+
         });
     }
 
-    //we will also change the increment to the arrow method.
-    // increment = () => {//
-    //     //here we are directly changing the state rather than this we should use the useState();
-    //     //this.state.counter++;
-    //     this.setState({
-    //         state:this.state.counter++
-    //     });
-    // }
+    decrement(by) {
+        console.log(`increment from parent -${by}`)
+        this.setState({
+            counter: this.state.counter -by
+
+        });
+    }
+}
+
+class CounterButton extends Component {
+    constructor() {
+        super();
+        this.state = {
+            counter: 0
+        }
+        this.increment = this.increment.bind(this);
+        this.decrement = this.decrement.bind(this);
+    }
+
+    render() {
+        return (
+            <div className="counterbutton">
+                <button onClick={this.increment}>+{this.props.by}</button>
+                <span> </span>
+                <button onClick={this.decrement}>-{this.props.by}</button>
+                <span className="count">{this.state.counter}</span>
+
+            </div>
+        );
+    }
+    increment() {
+        this.setState({
+            counter: this.state.counter + this.props.by
+
+        });
+        this.props.incrementMethod(this.props.by);
+    }
+
+    decrement() {
+        this.setState({
+            counter: this.state.counter - this.props.by
+
+        });
+        this.props.decrementMethod(this.props.by);
+    }
 }
 
 
+CounterButton.defaultProps = {
+    by: 1
+}
+
+
+CounterButton.propTypes = {
+    by: PropTypes.number
+}
+
+//we can fix the prop type here.
 
 export default Counter;
