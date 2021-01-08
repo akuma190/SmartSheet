@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
+import FirstComponent,{SecondComponent} from './Components/examples/FirstComponent'
+import ThirdComponent from './Components/examples/ThirdComponent'
+import Counter from './Components/counter/Counter'
 import logo from './logo.svg';
 import './App.css';
+
  
 class App extends Component {
   render() {
     return (
       <div className="App">
-         My Hello World
-         <FirstComponent></FirstComponent>
+       <Counter></Counter>
       </div>
     );
   }
 }
 
-class FirstComponent extends Component {
+class LearningComponents extends Component{
   render() {
     return (
-      <div className="FirstComponent">
-         First Component
+      <div className="LearningComponents">
+         My Hello World
+         <FirstComponent></FirstComponent>
+         <SecondComponent></SecondComponent>
+         <ThirdComponent></ThirdComponent>
       </div>
     );
   }
 }
+
+
+
 export default App;
